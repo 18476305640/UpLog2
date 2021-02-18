@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjazn.dao.PointLogMapper">
+    <delete id="deletePointLog" >
+        delete from point_log where up_id=#{up_id} and log_id=#{log_id}
+    </delete>
+    <insert id="addPointLog" >
+        insert into point_log (up_id, log_id, point_date, point_type) values (#{up_id},#{log_id},#{point_date},#{point_type});
+    </insert>
+    <update id="updatePointLog" >
+        update point_log set point_date = #{point_date},point_type=#{point_type} where up_id=#{up_id} and log_id=#{log_id};
+    </update>
+    <select id="queryByUpLogId" resultType="PointLog">
+        select * from point_log where up_id=#{up_id} and log_id=#{log_id};
+    </select>
+    <select id="queryByUpId" resultType="PointLog">
+        select * from point_log where  up_id=#{up_id} ;
+    </select>
+    <select id="queryByLogId" resultType="PointLog">
+        select * from point_log where  log_id=#{log_id} ;
+    </select>
+
+
+</mapper>

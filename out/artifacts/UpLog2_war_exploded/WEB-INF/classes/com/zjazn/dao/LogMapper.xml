@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.zjazn.dao.LogMapper">
+    <insert id="addLog" parameterType="Log">
+        insert into log(up_id,log_title, log_content, log_date,log_update_date,log_state) values (#{up_id},#{log_title},#{log_content},#{log_date},#{log_update_date},0)
+    </insert>
+    <delete id="deleteLog">
+        delete from log where log_id=#{log_id}
+    </delete>
+    <update id="updateLog" parameterType="Log">
+        update log set log_title=#{log_title},log_content=#{log_content},log_update_date=#{log_update_date} where log_id=#{log_id}
+    </update>
+
+    <update id="updateLogByTB">
+        update log set log_top =#{log_top},log_bottom=#{log_bottom},log_state=0.5 where log_id=#{log_id};
+    </update>
+
+    <select id="queryByLogId" resultType="Log">
+        select * from  log where log_id=#{log_id}
+    </select>
+    <select id="queryByUpId" resultType="Log">
+        select * from log where up_id=#{up_id};
+    </select>
+    <select id="getTablePageNumber" resultType="Integer">
+        select count(*) from log;
+    </select>
+    <select id="queryByUpidLimit" resultType="Log">
+        select * from log where up_id=#{up_id} and log_state=1 limit #{started},#{length};
+    </select>
+    <select id="getOneUpTablePageNumber" resultType="Integer">
+        select count(*) from log where up_id=#{up_id} and log_state>0;
+    </select>
+    <select id="queryByMinDate" resultType="MinDateLog">
+        SELECT * FROM log left join up on log.up_id = up.up_id where log_state>0 ORDER BY log_date desc ,log_update_date desc limit #{started},#{length};
+    </select>
+    <select id="queryByUpTop" resultType="MinDateLog">
+        SELECT * FROM LOG LEFT JOIN up ON log.up_id = up.up_id WHERE (DATEDIFF(DATE_ADD(DATE_ADD(LAST_DAY(NOW()),INTERVAL 1 DAY),INTERVAL -1 MONTH),log.log_date) BETWEEN -30 AND 1 ) and log_state>0 ORDER BY log_top DESC ,log_bottom ASC LIMIT 0,#{topNumber};
+
+    </select>
+    <select id="getMinDatePageNumber" resultType="int">
+        select count(*) from log where log_state=1;
+    </select>
+    <select id="queryByLike" resultType="Log">
+        SELECT * FROM LOG WHERE log_title LIKE   CONCAT('%',#{likeValue},'%')  and log_state>0 limit #{startNumber},#{numberToPage};
+    </select>
+    <select id="getLikeLogNumber" resultType="Integer">
+        select count(*) from log where log_title like CONCAT('%',#{likeValue},'%') and log_state>0;
+    </select>
+    <update id="updateLogState">
+        update log set log_state = #{state} where log_id=#{log_id};
+    </update>
+
+    <select id="queryLogByState" resultType="Log">
+        select * from log where log_state=#{state}
+        <if test="likeValue != null">
+            AND log_title like CONCAT('%',#{likeValue},'%')
+        </if>
+        order by log_date desc limit #{start},#{pageLength};
+    </select>
+    <select id="queryAll" resultType="Log">
+        select * from log where log_state>0
+        <if test="likeValue != null">
+            AND log_title like CONCAT('%',#{likeValue},'%')
+        </if>
+        order by log_date desc limit #{start},#{pageLength};
+    </select>
+
+    <select id="getTypeLogNumber" resultType="Integer">
+        select count(*) from log where log_state=#{state}
+        <if test="likeValue != null">
+            AND log_title like CONCAT('%',#{likeValue},'%');
+        </if>
+    </select>
+    <select id="getAllLogNumber" resultType="Integer">
+        select count(*) from log where log_state=1
+        <if test="likeValue != null">
+            AND log_title like CONCAT('%',#{likeValue},'%');
+        </if>
+    </select>
+    
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjazn.dao.CommentMapper">
+    <insert id="addComment" parameterType="Comment">
+        insert into comment (log_id, up_id, comment_content, comment_date) values (#{log_id},#{up_id},#{comment_content},#{comment_date})
+    </insert>
+    <delete id="deleteComment">
+        delete from comment where comment_id=#{comment_id}
+    </delete>
+    <update id="updateComment" parameterType="Comment">
+        update comment set comment_content=#{comment_content},comment_date=#{comment_date}  where comment_id = #{comment_id}
+    </update>
+    
+    <select id="queryByLogId" resultType="CommentAndUp">
+        select * from comment left join up on comment.up_id = up.up_id where comment.log_id=#{log_id};
+    </select>
+
+</mapper>

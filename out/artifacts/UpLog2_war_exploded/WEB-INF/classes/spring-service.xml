@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!--扫描service下的包-->
+    <context:component-scan base-package="com.zjazn.service" />
+    <!--将我们的所有业务类，注入到spring，可以通过配置，或者注解实现-->
+
+    <bean id="CommentServiceImpl" class="com.zjazn.service.CommentServiceImpl">
+        <property name="comment" ref="commentMapper" />
+    </bean>
+    <bean id="LogServiceImpl" class="com.zjazn.service.LogServiceImpl">
+        <property name="logMapper" ref="logMapper" />
+    </bean>
+    <bean id="PointLogServiceImpl" class="com.zjazn.service.PointLogServiceImpl">
+        <property name="pointLogMapper" ref="pointLogMapper" />
+    </bean>
+    <bean id="UpServiceImpl" class="com.zjazn.service.UpServiceImpl">
+        <property name="upMapper" ref="upMapper" />
+    </bean>
+    <bean id="ReportServiceImpl" class="com.zjazn.service.ReportServiceImpl">
+        <property name="reportMapper" ref="reportMapper" />
+    </bean>
+
+
+
+    <!--声明式事务配置-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+</beans>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zjazn.dao.UpMapper">
+    <delete id="deleteUp" >
+        delete from up where up_id=#{up_id}
+    </delete>
+    <update id="updateUpPById" parameterType="Up">
+        update up set up_pname =#{up_pname},up_ptext=#{up_ptext} ,up_headImg=#{up_headImg} where up_id=#{up_id};
+    </update>
+    <update id="updateUpUserPassword" >
+        update up set up_password=#{up_password}  where up_id=#{up_id};
+    </update>
+    <insert id="addUp" parameterType="Up">
+        insert into up (up_pname, up_ptext, up_name, up_password, up_cdate,up_power) values (#{up_pname},#{up_ptext},#{up_name},#{up_password},#{up_cdate},#{up_power});
+    </insert>
+    <select id="queryById" resultType="Up">
+        select * from up where up_id=#{up_id};
+    </select>
+    <select id="queryAll" resultType="Up">
+        select * from up;
+    </select>
+    <select id="queryByUserName" resultType="Up">
+        select * from up where up_name=#{up_name};
+    </select>
+
+</mapper>
